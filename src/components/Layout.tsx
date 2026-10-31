@@ -24,7 +24,7 @@ export default function Layout() {
         >
           ☰
         </button>
-        <NavLink to="/" className="flex items-center gap-2 font-semibold tracking-tight">
+        <NavLink to="/" className="flex shrink-0 items-center gap-2 whitespace-nowrap font-semibold tracking-tight">
           <span className="text-positiva">●</span>
           <span className="text-negativa">●</span>
           <span>Simulador EM</span>

@@ -1,4 +1,4 @@
-import { useDeferredValue, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import ModuloLayout from '../../components/ModuloLayout';
 import Formula from '../../components/Formula';
 import PanelFormulas from '../../components/PanelFormulas';
@@ -9,7 +9,8 @@ import { formatearSI, formatearTex } from '../../components/formato';
 import { campoMagnetico } from '../../physics/magnetism';
 import type { Vec3 } from '../../physics/vector';
 import Escena3DMagnetica from './Escena3DMagnetica';
-import { construirFuente, formulaAnalitica, geometria, lineasCampoB, type ParamsFuente, type TipoFuente } from './fuentes';
+import { construirFuente, formulaAnalitica, geometria, type ParamsFuente, type TipoFuente } from './fuentes';
+import { useLineasB } from './useLineasB';
 
 const VALORES_INICIALES: Record<TipoFuente, Omit<ParamsFuente, 'tipo'>> = {
   hilo: { I: 10, R: 0.5, L: 1, N: 10 },
@@ -55,15 +56,11 @@ export default function CampoMagnetico() {
   const [mostrarBrujulas, setMostrarBrujulas] = useState(false);
   const [sonda, setSonda] = useState<Vec3>(SONDA_INICIAL.solenoide);
 
-  // Las líneas de campo son costosas: se calculan con un valor diferido para que los sliders sigan fluidos
-  const diferido = useDeferredValue(params);
-  const polilineas = useMemo(() => geometria(diferido), [diferido]);
-  const fuente = useMemo(() => construirFuente(diferido), [diferido]);
-  const lineas = useMemo(() => lineasCampoB(diferido, fuente), [diferido, fuente]);
-  const calculando = diferido !== params;
-
-  const fuenteActual = useMemo(() => construirFuente(params), [params]);
-  const B = useMemo(() => campoMagnetico(fuenteActual, sonda, 0.005), [fuenteActual, sonda]);
+  // Las líneas de campo son costosas (Biot–Savart × RK4): se trazan en un Web Worker
+  const { lineas, paramsLineas, calculando } = useLineasB(params);
+  const polilineas = useMemo(() => geometria(params), [params]);
+  const fuente = useMemo(() => construirFuente(params), [params]);
+  const B = useMemo(() => campoMagnetico(fuente, sonda, 0.005), [fuente, sonda]);
   const magB = Math.hypot(B.x, B.y, B.z);
   const an = formulaAnalitica(params, sonda);
   const errorPct = an.valor ? (100 * Math.abs(magB - an.valor)) / an.valor : null;
@@ -80,10 +77,10 @@ export default function CampoMagnetico() {
       simulacion={
         <>
           <Escena3DMagnetica
-            params={diferido}
+            params={params}
             polilineas={polilineas}
             fuente={fuente}
-            lineas={lineas}
+            lineas={paramsLineas?.tipo === params.tipo ? lineas : []}
             mostrarLineas={mostrarLineas}
             mostrarBrujulas={mostrarBrujulas}
             sonda={sonda}

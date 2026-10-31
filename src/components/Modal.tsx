@@ -29,7 +29,7 @@ export default function Modal({ abierto, titulo, onCerrar, children }: Props) {
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <h2 className="text-xl font-semibold">{titulo}</h2>
-          <button className="boton px-2" onClick={onCerrar} aria-label="Cerrar">
+          <button className="boton px-2" onClick={onCerrar} aria-label="Cerrar" autoFocus>
             ✕
           </button>
         </div>

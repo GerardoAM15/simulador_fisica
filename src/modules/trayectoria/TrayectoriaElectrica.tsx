@@ -51,7 +51,8 @@ export default function TrayectoriaElectrica() {
 
   // ── Simulación ──
   const [corriendo, setCorriendo] = useState(false);
-  const [, setVersion] = useState(0);
+  // `version` cambia al reiniciar y durante la animación: sirve para redibujar el lienzo
+  const [version, setVersion] = useState(0);
   const sim = useRef<SimulacionParticula | null>(null);
   const trayectoria = useRef<Vec2[]>([]);
   const historial = useRef<PuntoEnergia[]>([]);
@@ -164,7 +165,8 @@ export default function TrayectoriaElectrica() {
       }
       ctx.restore();
     },
-    [fuente, magE, campoUniforme, q],
+    // `version` fuerza el redibujado cuando la simulación está en pausa
+    [fuente, magE, campoUniforme, q, version],
   );
 
   // ── Resultados ──
@@ -198,7 +200,7 @@ export default function TrayectoriaElectrica() {
             editable={fuente === 'cargas' && !corriendo}
             onClicVacio={corriendo ? undefined : (p) => setR0(p)}
             dibujarExtra={dibujarExtra}
-            animado
+            animado={corriendo}
             etiqueta="Trayectoria de la partícula"
           />
           {s?.fin && (

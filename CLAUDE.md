@@ -35,6 +35,11 @@ React Router (HashRouter, por GitHub Pages) · Vitest · despliegue en GitHub Pa
 - Movimiento en campo magnético: integrador de **Boris** (no Euler). Trayectorias en E: RK4.
 - Evitar singularidades cerca de cargas puntuales con un radio mínimo de suavizado.
 - Rendimiento: `requestAnimationFrame`, `useMemo`, Web Workers si el cálculo es pesado. Objetivo 60 FPS.
+  Los módulos se cargan con `lazy()` desde `App.tsx`; `vite.config.ts` separa las librerías en chunks
+  `vendor-*` (no importar Three.js ni Recharts desde código que use la página de inicio). Los lienzos
+  solo se animan mientras la simulación corre. Las líneas de B se trazan en `magnetico/lineas.worker.ts`.
+- Cada módulo nuevo debe agregarse en `modules/registry.ts` (con `instrucciones`) y en `COMPONENTES` de `App.tsx`.
+- Despliegue: `.github/workflows/deploy.yml` (GitHub Pages; `BASE_PATH` = nombre del repositorio).
 - Responsive.
 - Trabajo por fases (ver README). Al terminar cada fase: `npm run build` y `npm test` sin errores,
   resumen corto de lo hecho y cómo probarlo, y commit descriptivo.

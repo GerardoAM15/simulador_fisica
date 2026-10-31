@@ -40,7 +40,8 @@ export default function EnergiaRC() {
   const [velocidad, setVelocidad] = useState(1);
   const [cargando, setCargando] = useState(true);
   const [corriendo, setCorriendo] = useState(false);
-  const [, setVersion] = useState(0);
+  // `version` cambia al reiniciar, conmutar y durante la animación: sirve para redibujar el lienzo
+  const [version, setVersion] = useState(0);
 
   // Densidad de energía
   const [dmm, setDmm] = useState(0.1);
@@ -140,7 +141,7 @@ export default function EnergiaRC() {
       });
     },
     // El estado del circuito se lee de refs en cada cuadro (el lienzo es animado)
-    [R, C, V, corriendo, I0],
+    [R, C, V, corriendo, I0, version],
   );
 
   // Densidad de energía para un capacitor de placas equivalente con el mismo C
@@ -195,7 +196,7 @@ export default function EnergiaRC() {
       simulacion={
         <div className="flex h-full flex-col">
           <div className="relative min-h-[260px] flex-1">
-            <Canvas2D dibujar={dibujar} animado etiqueta="Circuito RC con interruptor de carga y descarga" />
+            <Canvas2D dibujar={dibujar} animado={corriendo} etiqueta="Circuito RC con interruptor de carga y descarga" />
           </div>
           <div className="grid shrink-0 gap-2 border-t border-slate-800 p-2 md:grid-cols-3">
             {grafico('Carga Q(t) [C]', [{ clave: 'Q', nombre: 'Q', color: '#fbbf24' }], 'C')}
