@@ -6,6 +6,8 @@ Aplicación web para visualizar en tiempo real campos eléctricos, potencial, ca
 campos magnéticos y trayectorias de partículas cargadas. Toda la física está implementada desde cero
 en TypeScript y validada con más de 100 pruebas automáticas contra resultados analíticos (error < 1 %).
 
+**Demo en línea:** https://gerardoam15.github.io/simulador_fisica/
+
 ## Módulos
 
 | Unidad | Módulo | Qué se puede hacer |

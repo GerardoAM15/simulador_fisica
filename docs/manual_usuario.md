@@ -26,8 +26,7 @@ Al final de cada módulo hay **experimentos sugeridos** para practicar los temas
 Funciona en computadoras, tabletas y celulares; en pantallas pequeñas la simulación aparece arriba y los controles
 debajo.
 
-**En línea:** abre la dirección publicada en GitHub Pages (`https://<usuario>.github.io/<repositorio>/`). No hay que
-instalar nada.
+**En línea:** abre https://gerardoam15.github.io/simulador_fisica/. No hay que instalar nada.
 
 **En tu computadora** (necesitas Node.js 20 o superior):
 
