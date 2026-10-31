@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .tarjeta {
+    @apply rounded-xl border border-slate-800 bg-slate-900/60 p-4;
+  }
+  .boton {
+    @apply inline-flex items-center gap-2 rounded-lg bg-slate-800 px-3 py-1.5 text-sm font-medium text-slate-100 transition hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:opacity-50;
+  }
+  .boton-primario {
+    @apply boton bg-sky-600 hover:bg-sky-500;
+  }
+}
+
+/* Las fórmulas KaTeX heredan el color del texto en tema oscuro */
+.katex {
+  font-size: 1.05em;
+}
