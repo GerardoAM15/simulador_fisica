@@ -10,6 +10,8 @@ const IMPLEMENTADOS: Record<string, LazyExoticComponent<ComponentType>> = {
   cargas: lazy(() => import('./modules/cargas/VisualizadorCargas')),
   potencial: lazy(() => import('./modules/potencial/CalculadoraPotencial')),
   'trayectoria-electrica': lazy(() => import('./modules/trayectoria/TrayectoriaElectrica')),
+  capacitores: lazy(() => import('./modules/capacitores/SimuladorCapacitores')),
+  energia: lazy(() => import('./modules/energia/EnergiaRC')),
 };
 
 function Cargando() {

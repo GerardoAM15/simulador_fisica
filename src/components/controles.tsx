@@ -36,6 +36,40 @@ export function Segmentado<T extends string>({ opciones, valor, onChange }: { op
   );
 }
 
+/** Lista desplegable con etiqueta. */
+export function Selector<T extends string>({
+  etiqueta,
+  valor,
+  opciones,
+  onChange,
+}: {
+  etiqueta: string;
+  valor: T;
+  opciones: OpcionSegmentado<T>[];
+  onChange: (v: T) => void;
+}) {
+  const id = useId();
+  return (
+    <div className="flex items-center justify-between gap-2 text-sm">
+      <label htmlFor={id} className="text-slate-300">
+        {etiqueta}
+      </label>
+      <select
+        id={id}
+        className="rounded-md border border-slate-700 bg-slate-950 px-2 py-1 text-slate-100 focus:border-sky-500 focus:outline-none"
+        value={valor}
+        onChange={(e) => onChange(e.target.value as T)}
+      >
+        {opciones.map((o) => (
+          <option key={o.valor} value={o.valor}>
+            {o.etiqueta}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 /** Notación científica con 5 cifras significativas y sin ceros sobrantes (1e+7, -1.6022e-19). */
 const aTexto = (v: number) =>
   v !== 0 && (Math.abs(v) < 1e-3 || Math.abs(v) >= 1e5) ? Number(v.toPrecision(5)).toExponential() : String(Number(v.toPrecision(6)));

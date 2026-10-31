@@ -6,7 +6,7 @@ import PanelFormulas from '../../components/PanelFormulas';
 import PanelResultados from '../../components/PanelResultados';
 import Slider from '../../components/Slider';
 import { EntradaNumero, Segmentado } from '../../components/controles';
-import { formatearSI } from '../../components/formato';
+import { formatearSI, marcasEje } from '../../components/formato';
 import { aPantallaX, aPantallaY, dibujarFlecha, type Vista } from '../../components/vista2d';
 import { CARGA_ELEMENTAL, MASA_ELECTRON, MASA_PROTON, VELOCIDAD_LUZ } from '../../physics/constants';
 import type { Vec2 } from '../../physics/vector';
@@ -181,6 +181,7 @@ export default function TrayectoriaElectrica() {
   const h = historial.current;
   const submuestreo = Math.max(1, Math.ceil(h.length / 300));
   const datosGrafico = h.filter((_, i) => i % submuestreo === 0 || i === h.length - 1);
+  const tGrafico = h.length ? h[h.length - 1].t : 0;
 
   const relativista = Math.max(rapidez, v0) > 0.1 * VELOCIDAD_LUZ;
   const parado = !corriendo && (s?.pasos ?? 0) === 0;
@@ -303,7 +304,15 @@ export default function TrayectoriaElectrica() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={datosGrafico} margin={{ top: 4, right: 8, bottom: 4, left: 4 }}>
                   <CartesianGrid stroke="#1e293b" />
-                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} tickFormatter={(v: number) => formatearSI(v, 2)} stroke="#64748b" fontSize={10} />
+                  <XAxis
+                    dataKey="t"
+                    type="number"
+                    domain={[0, tGrafico]}
+                    ticks={marcasEje(tGrafico)}
+                    tickFormatter={(v: number) => formatearSI(v, 2)}
+                    stroke="#64748b"
+                    fontSize={10}
+                  />
                   <YAxis tickFormatter={(v: number) => formatearSI(v, 2)} stroke="#64748b" fontSize={10} width={70} />
                   <Tooltip
                     contentStyle={{ background: '#0f172a', border: '1px solid #334155', fontSize: 12 }}

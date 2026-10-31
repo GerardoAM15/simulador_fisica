@@ -11,9 +11,10 @@ interface Props {
   /** Formato personalizado del valor mostrado */
   formato?: (v: number) => string;
   onChange: (v: number) => void;
+  deshabilitado?: boolean;
 }
 
-export default function Slider({ etiqueta, valor, min, max, paso = 0.01, unidad, formato, onChange }: Props) {
+export default function Slider({ etiqueta, valor, min, max, paso = 0.01, unidad, formato, onChange, deshabilitado = false }: Props) {
   const id = useId();
   return (
     <div className="space-y-1">
@@ -29,7 +30,8 @@ export default function Slider({ etiqueta, valor, min, max, paso = 0.01, unidad,
       <input
         id={id}
         type="range"
-        className="w-full accent-sky-500"
+        className="w-full accent-sky-500 disabled:opacity-40"
+        disabled={deshabilitado}
         min={min}
         max={max}
         step={paso}
