@@ -30,6 +30,7 @@ npm run dev      # http://localhost:5173
 npm test         # pruebas de la física (Vitest)
 npm run build    # build de producción en dist/
 npm run preview  # sirve el build en http://localhost:4173/simulador-em/
+npm run validacion  # tabla analítico vs simulado del informe técnico
 ```
 
 > En Windows, si PowerShell bloquea `npm`, usa `npm.cmd run dev` o ejecuta una vez
@@ -72,6 +73,13 @@ docs/           manual de usuario e informe técnico
 Rendimiento: cada módulo se carga bajo demanda y las librerías grandes van en archivos separados
 (Three.js solo se descarga en los módulos 3D). Las líneas de campo magnético se calculan en un Web Worker.
 
+## Documentación
+
+- [Manual de usuario](docs/manual_usuario.md): cómo usar cada módulo, experimentos sugeridos y solución de problemas.
+- [Informe técnico](docs/informe_tecnico.md): fundamentos físicos, arquitectura, algoritmos y validación.
+- [Tabla de validación](docs/tabla_validacion.md): analítico vs simulado (se regenera con `npm run validacion`).
+- [Guion del video](docs/guion_video.md): demostración de 8 minutos.
+
 ## Estado del desarrollo
 
 - [x] Fase 0 — Proyecto, layout, router, página de inicio
@@ -80,4 +88,4 @@ Rendimiento: cada módulo se carga bajo demanda y las librerías grandes van en 
 - [x] Fase 3 — Circuitos (MNA) · módulos 6 y 7
 - [x] Fase 4 — Magnetismo y Boris · módulos 8 y 9
 - [x] Fase 5 — Pulido UX, rendimiento, teoría, responsive, despliegue en GitHub Pages
-- [ ] Fase 6 — Documentación (manual, informe técnico, guion del video)
+- [x] Fase 6 — Documentación (manual, informe técnico, guion del video)
