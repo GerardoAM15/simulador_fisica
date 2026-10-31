@@ -12,6 +12,8 @@ const IMPLEMENTADOS: Record<string, LazyExoticComponent<ComponentType>> = {
   'trayectoria-electrica': lazy(() => import('./modules/trayectoria/TrayectoriaElectrica')),
   capacitores: lazy(() => import('./modules/capacitores/SimuladorCapacitores')),
   energia: lazy(() => import('./modules/energia/EnergiaRC')),
+  circuitos: lazy(() => import('./modules/circuitos/SimuladorCircuitos')),
+  'ley-ohm': lazy(() => import('./modules/ohm/LeyOhm')),
 };
 
 function Cargando() {
