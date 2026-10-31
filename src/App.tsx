@@ -14,6 +14,8 @@ const IMPLEMENTADOS: Record<string, LazyExoticComponent<ComponentType>> = {
   energia: lazy(() => import('./modules/energia/EnergiaRC')),
   circuitos: lazy(() => import('./modules/circuitos/SimuladorCircuitos')),
   'ley-ohm': lazy(() => import('./modules/ohm/LeyOhm')),
+  'campo-magnetico': lazy(() => import('./modules/magnetico/CampoMagnetico')),
+  lorentz: lazy(() => import('./modules/lorentz/FuerzaLorentz')),
 };
 
 function Cargando() {

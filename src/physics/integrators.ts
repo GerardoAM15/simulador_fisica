@@ -56,6 +56,53 @@ export function derivadaParticulaCampoE(q: number, m: number, campoE: (p: Vec3) 
 }
 
 /**
+ * Método de Boris para la fuerza de Lorentz  m dv/dt = q (E + v × B).
+ *
+ * Separa el efecto de E (dos medios impulsos) y el de B (una rotación pura de v):
+ *   v⁻ = v + (q E / m) Δt/2
+ *   t  = (q B / m) Δt/2,   s = 2t / (1 + |t|²)
+ *   v' = v⁻ + v⁻ × t,      v⁺ = v⁻ + v' × s          (rotación: |v⁺| = |v⁻|)
+ *   v_{n+1} = v⁺ + (q E / m) Δt/2,   r_{n+1} = r_n + v_{n+1} Δt
+ * Como la parte magnética es una rotación exacta, la energía cinética se conserva sin error
+ * acumulado aunque Δt sea grande: el movimiento circular no se "abre" en espiral como con Euler.
+ * Es simpléctico y de segundo orden (el ángulo girado por paso es 2·atan(ωΔt/2) ≈ ωΔt).
+ */
+export function pasoBoris(r: Vec3, v: Vec3, qm: number, E: Vec3, B: Vec3, dt: number): { r: Vec3; v: Vec3 } {
+  const h = (qm * dt) / 2;
+  const vmx = v.x + h * E.x;
+  const vmy = v.y + h * E.y;
+  const vmz = v.z + h * E.z;
+  const tx = h * B.x;
+  const ty = h * B.y;
+  const tz = h * B.z;
+  const s = 2 / (1 + tx * tx + ty * ty + tz * tz);
+  // v' = v⁻ + v⁻ × t
+  const vpx = vmx + (vmy * tz - vmz * ty);
+  const vpy = vmy + (vmz * tx - vmx * tz);
+  const vpz = vmz + (vmx * ty - vmy * tx);
+  // v⁺ = v⁻ + v' × s
+  const vx = vmx + s * (vpy * tz - vpz * ty) + h * E.x;
+  const vy = vmy + s * (vpz * tx - vpx * tz) + h * E.y;
+  const vz = vmz + s * (vpx * ty - vpy * tx) + h * E.z;
+  return { r: { x: r.x + vx * dt, y: r.y + vy * dt, z: r.z + vz * dt }, v: { x: vx, y: vy, z: vz } };
+}
+
+/**
+ * Euler explícito para la fuerza de Lorentz (solo para comparación didáctica):
+ *   v_{n+1} = v_n + (q/m)(E + v_n × B) Δt,   r_{n+1} = r_n + v_n Δt
+ * En un campo B puro |v| crece en un factor √(1 + (ωΔt)²) por paso: la órbita se abre en espiral.
+ */
+export function pasoEulerLorentz(r: Vec3, v: Vec3, qm: number, E: Vec3, B: Vec3, dt: number): { r: Vec3; v: Vec3 } {
+  const ax = qm * (E.x + v.y * B.z - v.z * B.y);
+  const ay = qm * (E.y + v.z * B.x - v.x * B.z);
+  const az = qm * (E.z + v.x * B.y - v.y * B.x);
+  return {
+    r: { x: r.x + v.x * dt, y: r.y + v.y * dt, z: r.z + v.z * dt },
+    v: { x: v.x + ax * dt, y: v.y + ay * dt, z: v.z + az * dt },
+  };
+}
+
+/**
  * Paso temporal adaptativo para que la partícula no recorra más de una longitud L por paso:
  *   Δt = min( L/|v| , √(2L/|a|) , Δt_max )
  * El primer término limita el avance por velocidad y el segundo el avance por aceleración

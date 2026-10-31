@@ -25,9 +25,14 @@ export interface OpcionesTrazado {
   limites: Caja;
   /** Por debajo de esta magnitud se considera un punto de campo nulo y se detiene */
   campoMinimo?: number;
+  /**
+   * Detener la línea cuando vuelve a su punto de partida (lazo cerrado). Útil para el campo
+   * magnético, cuyas líneas no tienen principio ni fin (∇·B = 0).
+   */
+  detectarCierre?: boolean;
 }
 
-export type MotivoFin = 'sumidero' | 'limite' | 'maxPasos' | 'campoNulo';
+export type MotivoFin = 'sumidero' | 'limite' | 'maxPasos' | 'campoNulo' | 'cerrada';
 
 export interface ResultadoTrazado {
   puntos: Vec3[];
@@ -81,6 +86,11 @@ export function trazarLinea(
       z: p.z + (h / 6) * (k1.z + 2 * k2.z + 2 * k3.z + k4.z),
     };
     puntos.push(p);
+
+    if (op.detectarCierre && i > 10 && Math.hypot(p.x - inicio.x, p.y - inicio.y, p.z - inicio.z) < 1.5 * h) {
+      puntos.push(inicio);
+      return { puntos, motivo: 'cerrada' };
+    }
 
     const fin = sumidero?.(p);
     if (fin) {

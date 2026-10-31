@@ -48,6 +48,6 @@ docs/           manual de usuario e informe técnico
 - [x] Fase 1 — Física base (vectores, electrostática, integradores) · módulos 1, 2 y 3
 - [x] Fase 2 — Capacitores · módulos 4 y 5
 - [x] Fase 3 — Circuitos (MNA) · módulos 6 y 7
-- [ ] Fase 4 — Magnetismo y Boris · módulos 8 y 9
+- [x] Fase 4 — Magnetismo y Boris · módulos 8 y 9
 - [ ] Fase 5 — Pulido UX, rendimiento, teoría, despliegue en GitHub Pages
 - [ ] Fase 6 — Documentación (manual, informe técnico, guion del video)
