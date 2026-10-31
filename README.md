@@ -45,7 +45,7 @@ docs/           manual de usuario e informe técnico
 ## Estado del desarrollo
 
 - [x] Fase 0 — Proyecto, layout, router, página de inicio
-- [ ] Fase 1 — Física base (vectores, electrostática, integradores) · módulos 1, 2 y 3
+- [x] Fase 1 — Física base (vectores, electrostática, integradores) · módulos 1, 2 y 3
 - [ ] Fase 2 — Capacitores · módulos 4 y 5
 - [ ] Fase 3 — Circuitos (MNA) · módulos 6 y 7
 - [ ] Fase 4 — Magnetismo y Boris · módulos 8 y 9
